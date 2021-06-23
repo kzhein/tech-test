@@ -2,3 +2,12 @@
   margin: 30px auto;
   max-width: 800px;
 }
+
+.input-group {
+  margin: 10px auto;
+  text-align: center;
+}
+
+.input-group label {
+  margin-right: 5px;
+}
