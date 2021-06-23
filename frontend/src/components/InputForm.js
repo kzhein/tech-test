@@ -1,11 +1,17 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
-const InputForm = ({ handleSubmit }) => {
+const InputForm = ({ handleSubmit, setPersonAdded }) => {
   const [person, setPerson] = useState({
     name: '',
     age: '',
     gender: 'M',
   });
+
+  const addPerson = async person => {
+    await axios.post('http://localhost:8080/chart', person);
+    setPersonAdded(personAdded => setPersonAdded(++personAdded));
+  };
 
   const handleChange = e => {
     setPerson({
@@ -19,12 +25,12 @@ const InputForm = ({ handleSubmit }) => {
     <form
       onSubmit={e => {
         e.preventDefault();
+        addPerson(person);
         setPerson({
           name: '',
           age: '',
           gender: 'M',
         });
-        handleSubmit(person);
       }}
     >
       <div className='input-group'>

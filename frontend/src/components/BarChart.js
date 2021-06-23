@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
+import axios from 'axios';
 
-const BarChart = ({ people }) => {
-  const youngAdults = people.filter(
-    person => person.age >= 0 && person.age <= 35
-  ).length;
+const BarChart = ({ personAdded }) => {
+  const [response, setResponse] = useState(null);
 
-  const adults = people.filter(
-    person => person.age >= 36 && person.age <= 50
-  ).length;
+  const fetchData = async () => {
+    const res = await axios.get('http://localhost:8080/bar');
+    setResponse(res.data);
+  };
 
-  const seniors = people.filter(person => person.age >= 51).length;
+  useEffect(() => {
+    fetchData();
+  }, [personAdded]);
 
   const data = {
     labels: [
@@ -21,7 +23,11 @@ const BarChart = ({ people }) => {
     datasets: [
       {
         label: '# of people',
-        data: [youngAdults, adults, seniors],
+        data: [
+          response?.youngAdults?.length,
+          response?.adults?.length,
+          response?.seniors?.length,
+        ],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
